@@ -1,0 +1,116 @@
+{
+  "manifestVersion": 1,
+  "id": "com.example.plan-bridge",
+  "name": "Plan Agent Bridge",
+  "version": "3.7.0",
+  "description": "Kubek-native analytics UI for Plan Agent and its shared SQLite database.",
+  "author": { "name": "Plan Agent Bridge" },
+  "license": "LGPL-3.0-or-later",
+  "keywords": ["plan", "analytics", "paper", "sqlite"],
+  "engines": { "kubek": ">=4.0.0" },
+  "permissions": {
+    "declares": [
+      {
+        "key": "ext.plan.view",
+        "label": "Open Plan analytics",
+        "group": "Plan Bridge"
+      },
+      {
+        "key": "ext.plan.performance",
+        "label": "View Plan performance metrics",
+        "group": "Plan Bridge"
+      },
+      {
+        "key": "ext.plan.activity",
+        "label": "View Plan activity and combat statistics",
+        "group": "Plan Bridge"
+      },
+      {
+        "key": "ext.plan.audience",
+        "label": "View Plan audience and player list",
+        "group": "Plan Bridge"
+      },
+      {
+        "key": "ext.plan.player-details",
+        "label": "View detailed Plan player profiles and Agent data",
+        "group": "Plan Bridge"
+      },
+      {
+        "key": "ext.plan.worlds",
+        "label": "View Plan worlds and game-mode statistics",
+        "group": "Plan Bridge"
+      },
+      {
+        "key": "ext.plan.plugins",
+        "label": "View Plan plugin inventory and version history",
+        "group": "Plan Bridge"
+      },
+      {
+        "key": "ext.plan.extensions",
+        "label": "View Plan extension integration values",
+        "group": "Plan Bridge"
+      },
+      {
+        "key": "ext.plan.moderation",
+        "label": "View Plan moderation data and allowlist events",
+        "group": "Plan Bridge"
+      },
+      {
+        "key": "ext.plan.connection",
+        "label": "View Plan connection addresses and geolocation",
+        "group": "Plan Bridge"
+      },
+      {
+        "key": "ext.plan.manage",
+        "label": "Manage Plan database bindings",
+        "group": "Plan Bridge"
+      }
+    ],
+    "requires": ["servers:read", "http:routes", "events:server"]
+  },
+  "backend": {
+    "entry": "backend/index.ts",
+    "isolation": "in-process",
+    "events": ["server.started", "server.running", "server.stopped", "server.crashed"]
+  },
+  "frontend": {
+    "entry": "frontend/index.ts",
+    "contributes": {
+      "sidebar": [
+        {
+          "id": "plan-network",
+          "label": "ext.plan.network",
+          "icon": "ChartNoAxesCombined",
+          "route": "com.example.plan-bridge/PlanNetwork",
+          "permission": "ext.plan.view",
+          "section": "integrations"
+        }
+      ],
+      "serverTabs": [
+        {
+          "id": "plan",
+          "label": "ext.plan.tab",
+          "component": "PlanServerTab",
+          "permission": "ext.plan.view"
+        }
+      ],
+      "dashboardWidgets": [
+        {
+          "id": "plan",
+          "label": "ext.plan.widget",
+          "component": "PlanDashboardWidget",
+          "permission": "ext.plan.view",
+          "defaultSize": { "w": 1, "h": 2 }
+        }
+      ],
+      "settingsPanels": [
+        {
+          "id": "plan",
+          "label": "ext.plan.settings",
+          "component": "PlanSettings",
+          "permission": "ext.plan.manage"
+        }
+      ]
+    }
+  }
+}
